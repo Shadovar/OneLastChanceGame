@@ -1,4 +1,4 @@
-A Game by Carl Erez
-Based on a Konami property as well as a game developed with Mark Medved and Lucio Espinoza
+A Game by Carl Erez and Mark Medved
+Based on a Konami property
 
 Terminal Command (get rid of this later) "python -m SimpleHTTPServer"
