@@ -5,33 +5,59 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         this.x = initx;
         this.y = inity;
-
+        this.body.setSize(42, 42, true);
+        this.setImmovable();
+        this.stepLeft = true;
     }
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyDOWN)) {
             console.log(" attemping to move player down")
             this.angle = 180;
-            this.anims.play('p1Move', false);
-            this.y += 20;
+            if(this.stepLeft){
+                this.anims.play('pMove1', false);
+            }
+            else{
+                this.anims.play('pMove2', false);
+            }
+            this.stepLeft = !this.stepLeft;
+            this.y += 50;
         }
         if (Phaser.Input.Keyboard.JustDown(keyUP)) {
             console.log(" attemping to move player up")
             this.angle = 0;
-            this.anims.play('p1Move', false);
-            this.y -= 20;
+            if(this.stepLeft){
+                this.anims.play('pMove1', false);
+            }
+            else{
+                this.anims.play('pMove2', false);
+            }
+            this.stepLeft = !this.stepLeft;
+            this.y -= 50;
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             console.log("Attemping to move player right")
-            this.anims.play('p1Move', false);
+            if(this.stepLeft){
+                this.anims.play('pMove1', false);
+            }
+            else{
+                this.anims.play('pMove2', false);
+            }
+            this.stepLeft = !this.stepLeft;
             this.angle = 90;
-            this.x += 20;
+            this.x += 50;
         }
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             console.log("Attemping to move player left")
             this.angle = 270;
-            this.anims.play('p1Move', false);
-            this.x -= 20;
+            if(this.stepLeft){
+                this.anims.play('pMove1', false);
+            }
+            else{
+                this.anims.play('pMove2', false);
+            }
+            this.stepLeft = !this.stepLeft;
+            this.x -= 50;
         }
     }
 
