@@ -1,4 +1,5 @@
 class Menu extends Phaser.Scene {
+    //TODO: Make menu, loading screen, etc
     constructor(){
         super("menuScene");
     }
