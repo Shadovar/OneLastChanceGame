@@ -1,6 +1,9 @@
 class Play extends Phaser.Scene {
     constructor(){
         super("playScene");
+        this.startX = config.width/2;
+        this.startY = config.height-25;
+        this.goalNum = 3;
     }
 
     preload(){
@@ -12,6 +15,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('rightArrowIndicator', './assets/froggerRightArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
         this.load.spritesheet('upArrowIndicator', './assets/froggerUpArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
         this.load.spritesheet('downArrowIndicator', './assets/froggerDownArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
+        this.load.spritesheet('objective','./assets/olcObjectiveInitial.png',{frameWidth: 52, frameHeight: 52, startFrame: 0, endFrame: 1})
         this.load.image('hangupSymbol','./assets/hangupSymbol.png');
         this.load.image('binary', './assets/olcBinary.png');
     }
@@ -64,21 +68,16 @@ class Play extends Phaser.Scene {
         this.leftArrowAnim.play('leftArrowFade', true);
         this.rightArrowAnim.play('rightArrowFade', true);
 
-        // Create Player Object and animations
-        this.player = new Player(this, config.width/2, config.height-25, 'playerWalk', 0).setOrigin(0.5);
-        this.anims.create({                                 //basic movement animation
-            key: 'pMove1',
+        //Create goal group and animations
+        this.goals = this.add.group({
+            runChildUpdate: true
+        });
+        this.anims.create({
+            key: 'goal',
             repeat: 0,
-            frames: this.anims.generateFrameNumbers('playerWalk', {start: 0, end: 7}),
+            frames: this.anims.generateFrameNumbers('objective', {start: 0, end: 1}),
             frameRate: 24
         });
-        this.anims.create({                                 //basic movement animation
-          key: 'pMove2',
-          repeat: 0,
-          frames: this.anims.generateFrameNumbers('playerWalk', {start: 8, end: 14}),
-          frameRate: 24
-      });
-        //console.log(this.player)
 
         //Create obstacles in Level
         this.obstacles = this.add.group({
@@ -88,8 +87,25 @@ class Play extends Phaser.Scene {
         //Create an initial batch of obstacles
         this.initialObstacleBatch();
 
+        //create initial set of goals
+        this.initialGoalBatch();
 
 
+        // Create Player Object and animations
+        this.player = new Player(this, this.startX, this.startY, 'playerWalk', 0).setOrigin(0.5);
+        this.anims.create({                                 //basic movement animation
+            key: 'pMove1',
+            repeat: 0,
+            frames: this.anims.generateFrameNumbers('playerWalk', {start: 0, end: 7}),
+            frameRate: 24
+        });
+        this.anims.create({                                 //basic movement animation
+            key: 'pMove2',
+            repeat: 0,
+            frames: this.anims.generateFrameNumbers('playerWalk', {start: 8, end: 14}),
+            frameRate: 24
+        });
+        //console.log(this.player)
         //Define various gatekeepers
         this.tutorialShowing = true;
 
@@ -99,16 +115,24 @@ class Play extends Phaser.Scene {
 
         this.player.update();
         this.physics.world.collide(this.player,this.obstacles,this.collideWithObstacle, null, this);
+        this.physics.world.collide(this.player,this.goals,this.reachGoal, null, this);
 
-        // function addObstacle(x,y,speed,texture,frame){
-        //     let obstacle = new Obstacle(this,x,y,texture,frame,speed);
-        //     this.obstacles.add(obstacle);
-        // }
     }
 
 
     collideWithObstacle(player, obstacle){
         console.log("player collides with obstacle " + obstacle.texture.key);
+    }
+
+    reachGoal(player, goal){
+        if (goal.enabled) {
+            this.time.delayedCall(250, () => {
+                player.x = this.startX;
+                player.y = this.startY;
+                goal.enabled = false;
+                goal.play('goal');
+            }, null, this);
+        }
     }
 
     initialObstacleBatch(){
@@ -142,5 +166,9 @@ class Play extends Phaser.Scene {
       //Row 10
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 575,
         'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+    }
+    initialGoalBatch(){
+        this.goals.add(new Goal(this, config.width/3, 0, 'objective',0).setOrigin(.5,0));
+
     }
 }
