@@ -1,7 +1,8 @@
 class Obstacle extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, initx, inity, texture, frame, speed) {
+    constructor(scene, initx, inity, texture, frame, speed, audio) {
         super(scene, initx, inity, texture, frame);
         this.speed = speed;
+        this.audio = audio;
         scene.add.existing(this);
         scene.physics.add.existing(this);
 

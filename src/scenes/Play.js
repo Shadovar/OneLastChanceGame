@@ -15,13 +15,10 @@ class Play extends Phaser.Scene {
 
         //Load Spritesheets
         this.load.spritesheet('playerWalk', './assets/olcWalk.png', {frameWidth: 60, frameHeight: 48, startFrame: 0, endFrame: 14});
-        this.load.spritesheet('leftArrowIndicator', './assets/froggerLeftArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
-        this.load.spritesheet('rightArrowIndicator', './assets/froggerRightArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
-        this.load.spritesheet('upArrowIndicator', './assets/froggerUpArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
-        this.load.spritesheet('downArrowIndicator', './assets/froggerDownArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
         this.load.spritesheet('objective','./assets/olcObjectiveInitial.png',{frameWidth: 52, frameHeight: 52, startFrame: 0, endFrame: 1})
         this.load.image('hangupSymbol','./assets/hangupSymbol.png');
         this.load.image('binary', './assets/olcBinary.png');
+        this.load.image('money', './assets/moneyObstacleInitial.png');
     }
 
     create() {
@@ -37,42 +34,6 @@ class Play extends Phaser.Scene {
         this.binaryTop = this.add.sprite(config.width/2, 25, 'binary').setOrigin(0.5);
         this.binaryMid = this.add.sprite(config.width/2, config.height/2, 'binary').setOrigin(0.5);
         this.binaryBot = this.add.sprite(config.width/2, config.height-25, 'binary').setOrigin(0.5);
-
-
-
-        //Initialize Controls
-        this.upArrowAnim = this.add.sprite(config.width - 84, config.height - 72, 'upArrowIndicator', 0).setOrigin(0,0).setScale(.5);
-        this.anims.create({
-          key: 'upArrowFade',
-          repeat: -1,
-          frames: this.anims.generateFrameNumbers('upArrowIndicator', { start: 0, end: 11, first: 0}),
-          frameRate: 6
-        });
-        this.downArrowAnim = this.add.sprite(config.width - 84, config.height - 40, 'downArrowIndicator', 0).setOrigin(0,0).setScale(0.5);
-        this.anims.create({
-          key: 'downArrowFade',
-          repeat: -1,
-          frames: this.anims.generateFrameNumbers('downArrowIndicator', { start: 0, end: 11, first: 0}),
-          frameRate: 6
-        });
-        this.leftArrowAnim = this.add.sprite(config.width - 116, config.height - 40, 'leftArrowIndicator', 0).setOrigin(0,0).setScale(0.5);
-        this.anims.create({
-          key: 'leftArrowFade',
-          repeat: -1,
-          frames: this.anims.generateFrameNumbers('leftArrowIndicator', { start: 0, end: 11, first: 0}),
-          frameRate: 6
-        });
-        this.rightArrowAnim = this.add.sprite(config.width - 52, config.height - 40, 'rightArrowIndicator', 0).setOrigin(0,0).setScale(0.5);
-        this.anims.create({
-          key: 'rightArrowFade',
-          repeat: -1,
-          frames: this.anims.generateFrameNumbers('rightArrowIndicator', { start: 0, end: 11, first: 0}),
-          frameRate: 6
-        });
-        this.upArrowAnim.play('upArrowFade', true);
-        this.downArrowAnim.play('downArrowFade', true);
-        this.leftArrowAnim.play('leftArrowFade', true);
-        this.rightArrowAnim.play('rightArrowFade', true);
 
 
 
@@ -139,6 +100,9 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        if(this.playerDead){
+          return;
+        }
 
         this.player.update();
         this.physics.world.collide(this.player,this.obstacles,this.collideWithObstacle, null, this);
@@ -164,6 +128,12 @@ class Play extends Phaser.Scene {
 
     collideWithObstacle(player, obstacle){
         console.log("player collides with obstacle " + obstacle.texture.key);
+        this.currPlayingDialogue.stop();
+        this.cache.audio.remove(this.dialogueSectionNames[this.currentDialogueSection]);
+        player.destroy();
+        this.playerDead = true;
+        this.currPlayingDialogue = this.sound.add(obstacle.audio);
+        this.currPlayingDialogue.play();
     }
 
     reachGoal(player, goal){
@@ -209,34 +179,34 @@ class Play extends Phaser.Scene {
     initialObstaclesandGoals(){
       //Row 1
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 75,
-        'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+        'hangupSymbol',0, .3, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
       //Row 2
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 125,
-        'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+        'hangupSymbol',0, .3, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
       //Row 3
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 175,
-        'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+        'hangupSymbol',0, .3, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
       //Row 4
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 225,
-        'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+        'hangupSymbol',0, .3, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
       //Row 5
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 275,
-        'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+        'hangupSymbol',0, .3, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
       //Row 6
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 375,
-        'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+        'hangupSymbol',0, .3, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
       //Row 7
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 425,
-        'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+        'hangupSymbol',0, .3, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
       //Row 8
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 475,
-        'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+        'hangupSymbol',0, .3, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
       //Row 9
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 525,
-        'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+        'hangupSymbol',0, .3, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
       //Row 10
       this.obstacles.add(new Obstacle(this, config.width/2,config.height - 575,
-        'hangupSymbol',0, .3).setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+        'hangupSymbol',0, .3, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
       //Goals
       this.goals.add(new Goal(this, config.width/3, 0, 'objective',0).setOrigin(.5,0));
       this.goalNum = 1;
@@ -244,7 +214,23 @@ class Play extends Phaser.Scene {
 
     secondObstaclesandGoals(currState){
       console.log("Loading second set of obstacles");
-
+      //Row 3
+      this.obstacles.add(new Obstacle(this, 3*config.width/8,config.height - 175,
+        'money',0, .3, "moneyExcuse").setOrigin(.5,.5).setScale(.08,.08).setCircle(265,30,-10).setImmovable());
+      this.obstacles.add(new Obstacle(this, 4*config.width/5,config.height - 175,
+        'money',0, .3, "moneyExcuse").setOrigin(.5,.5).setScale(.08,.08).setCircle(265,30,-10).setImmovable());
+      //Row 5
+      this.obstacles.add(new Obstacle(this, config.width/5,config.height - 275,
+      'money',0, .3, "moneyExcuse").setOrigin(.5,.5).setScale(.08,.08).setCircle(265,30,-10).setImmovable());
+      this.obstacles.add(new Obstacle(this, 2*config.width/5,config.height - 275,
+        'money',0, .3, "moneyExcuse").setOrigin(.5,.5).setScale(.08,.08).setCircle(265,30,-10).setImmovable());
+      //Row 7
+      this.obstacles.add(new Obstacle(this, config.width/2,config.height - 425,
+        'hangupSymbol',0, -.5, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+      //Row 9
+      this.obstacles.add(new Obstacle(this, 3*config.width/4,config.height - 525,
+        'hangupSymbol',0, -.4, "hangUp").setOrigin(.5,.5).setScale(.08,.08).setCircle(250,30,-10).setImmovable());
+  
       //Goals
       this.goals.add(new Goal(this, config.width/3, 0, 'objective',0).setOrigin(.5,0));
       this.goals.add(new Goal(this, 2*config.width/3, 0, 'objective',0).setOrigin(.5,0));
