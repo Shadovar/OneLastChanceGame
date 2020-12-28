@@ -6,18 +6,18 @@ class Menu extends Phaser.Scene {
 
     preload() {
         // load audio
-        this.load.audio('sixRings', './assets/sound/90188__howardfrombroward__6rings.wav');
-        this.load.audio('dialogue2', './assets/sound/Dialogue_Section_2.wav');
-        this.load.audio('dialogue3', './assets/sound/Dialogue_Section_3.wav');
-        this.load.audio('dialogue4', './assets/sound/Dialogue_Section_4.wav');
-        this.load.audio('dialogue5', './assets/sound/Dialogue_Section_5.wav');
-        this.load.audio('dialogue6', './assets/sound/Dialogue_Section_6.wav');
-        this.load.audio('dialogue7', './assets/sound/Dialogue_Section_7.wav');
-        this.load.audio('dialogue8', './assets/sound/Dialogue_Section_8.wav');
-        this.load.audio('dialogue9', './assets/sound/Dialogue_Section_9.wav');
-        this.load.audio('dialogue10', './assets/sound/Dialogue_Section_10.wav');
-        this.load.audio('dialogue11', './assets/sound/Dialogue_Section_11.wav');
-        this.load.audio('dialogue12', './assets/sound/Dialogue_Section_12.wav');
+        this.load.audio('phoneRinging', './assets/sound/90188__howardfrombroward__6rings.wav');
+        this.load.audio('dialogue2', './assets/sound/OLC_Dialogue_2.wav');
+        this.load.audio('dialogue3', './assets/sound/OLC_Dialogue_3.wav');
+        this.load.audio('dialogue4', './assets/sound/OLC_Dialogue_4.wav');
+        this.load.audio('dialogue5', './assets/sound/OLC_Dialogue_5.wav');
+        this.load.audio('dialogue6', './assets/sound/OLC_Dialogue_6.wav');
+        this.load.audio('dialogue7', './assets/sound/OLC_Dialogue_7.wav');
+        this.load.audio('dialogue8', './assets/sound/OLC_Dialogue_8.wav');
+        this.load.audio('dialogue9', './assets/sound/OLC_Dialogue_9.wav');
+        this.load.audio('dialogue10', './assets/sound/OLC_Dialogue_10.wav');
+        this.load.audio('dialogue11', './assets/sound/OLC_Dialogue_11.wav');
+        this.load.audio('dialogue12', './assets/sound/OLC_Dialogue_12.wav');
         this.load.audio('hangUp', './assets/sound/Hang_Up_Sound.wav');
         this.load.audio('moneyExcuse', './assets/sound/Money_Sound.wav');
         this.load.audio('ringBack', './assets/sound/RingBack.wav');

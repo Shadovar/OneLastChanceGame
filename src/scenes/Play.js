@@ -73,7 +73,7 @@ class Play extends Phaser.Scene {
             "dialogue7", "dialogue8", "dialogue9", "dialogue10", "dialogue11", "dialogue12"
         ]
         this.dialogueSectionTimes = [
-          6000, 14000, 8000, 17000, 16000, 7000, 15000, 20000, 10000, 26000, 26000, 23000
+          6000, 17000, 9000, 20000, 21000, 9000, 20000, 26000, 13000, 32000, 29000, 25000
         ]
 
 
