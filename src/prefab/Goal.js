@@ -3,6 +3,7 @@ class Goal extends Phaser.GameObjects.Sprite{
         super(scene, initx, inity, texture, frame);
         scene.add.existing(this);
         scene.physics.add.existing(this);
+
         this.enabled = true;
     }
 

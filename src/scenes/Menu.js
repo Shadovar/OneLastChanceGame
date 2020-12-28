@@ -106,7 +106,7 @@ class Menu extends Phaser.Scene {
           Phaser.Input.Keyboard.JustDown(keyRIGHT) ||
           Phaser.Input.Keyboard.JustDown(keyUP) ||
           Phaser.Input.Keyboard.JustDown(keyDOWN)) {
-              this.scene.start("playScene");    
+              this.scene.start("prePlayScene");
       }
     }
 }
