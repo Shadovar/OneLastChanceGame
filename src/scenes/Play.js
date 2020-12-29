@@ -30,6 +30,9 @@ class Play extends Phaser.Scene {
         this.load.image('hangupSymbol', './assets/hangupSymbol.png');
         this.load.image('binary', './assets/olcBinary.png');
         this.load.image('money', './assets/moneyObstacleInitial.png');
+        this.load.image('pointless', './assets/pointlessObstacle.png');
+        this.load.image('ungrateful', './assets/ungratefulObstacle.png');
+        this.load.image('neverCall', './assets/neverCallObstacle.png');
     }
 
     create() {
@@ -260,6 +263,18 @@ class Play extends Phaser.Scene {
                        this.obstacles.add(new Obstacle(this, col*config.width/10 , (.5+row)*config.height/13,
                            'money', 0, .3, "moneyExcuse").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
                        break;
+                   case 3:
+                        this.obstacles.add(new Obstacle(this, col*config.width/10 , (.5+row)*config.height/13,
+                            'neverCall', 0, .3, "neverCall").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
+                        break;
+                   case 4:
+                        this.obstacles.add(new Obstacle(this, col*config.width/10 , (.5+row)*config.height/13,
+                            'pointless', 0, .3, "pointless").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
+                        break;
+                   case 6:
+                        this.obstacles.add(new Obstacle(this, col*config.width/10 , (.5+row)*config.height/13,
+                            'money', 0, .3, "moneyExcuse").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
+                        break;
                }
             }
         }
