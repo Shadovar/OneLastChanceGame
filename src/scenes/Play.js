@@ -85,7 +85,7 @@ class Play extends Phaser.Scene {
             "dialogue7", "dialogue8", "dialogue9", "dialogue10", "dialogue11", "dialogue12"
         ]
         this.dialogueSectionTimes = [
-            6000, 17100, 9750, 20985, 21070, 9970, 20650, 26460, 13375, 32550, 29190, 25175
+            6000, 17100, 9750, 20985, 21070, 9970, 20650, 26460, 13375, 32550, 29190, 27332
         ]
 
 
@@ -209,15 +209,15 @@ class Play extends Phaser.Scene {
                        break;
                    case 3:
                         this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
-                            'neverCall', 0, element[1], "givingUp").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
+                            'neverCall', 0, element[1], "neverCallExcuse").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
                         break;
                    case 4:
                         this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
-                            'pointless', 0, element[1], "givingUp").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
+                            'pointless', 0, element[1], "pointlessExcuse").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
                         break;
                    case 6:
                         this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
-                            'ungrateful', 0, element[1], "givingUp").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 100, -10).setImmovable());
+                            'ungrateful', 0, element[1], "ungratefulExcuse").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 100, -10).setImmovable());
                         break;
                    case 7:
                     this.clouds.add(new Cloud(this, col*config.width/11 , (.5+row)*config.height/13,

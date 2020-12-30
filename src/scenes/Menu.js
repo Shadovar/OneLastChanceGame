@@ -18,11 +18,12 @@ class Menu extends Phaser.Scene {
         this.load.audio('dialogue10', './assets/sound/OLC_Dialogue_10.wav');
         this.load.audio('dialogue11', './assets/sound/OLC_Dialogue_11.wav');
         this.load.audio('dialogue12', './assets/sound/OLC_Dialogue_12.wav');
-        this.load.audio('hangUp', './assets/sound/Hang_Up_Sound.wav');
-        this.load.audio('moneyExcuse', './assets/sound/Money_Sound.wav');
         this.load.audio('ringBack', './assets/sound/RingBack.wav');
-        this.load.audio('ungratefulExcuse', './assets/sound/Ungrateful_Sound.wav');
-        this.load.audio('givingUp', './assets/sound/fathergivingupnoise.mp3');
+        this.load.audio('hangUp', './assets/sound/OLC_Nevermind.wav');
+        this.load.audio('moneyExcuse', './assets/sound/OLC_Money.wav');
+        this.load.audio('neverCallExcuse', './assets/sound/OLC_Money.wav');
+        this.load.audio('pointlessExcuse', './assets/sound/OLC_Pointless.wav');
+        this.load.audio('ungratefulExcuse', './assets/sound/OLC_Ungrateful.wav');
 
         //load spritesheets
         this.load.spritesheet('leftArrowIndicator', './assets/froggerLeftArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
