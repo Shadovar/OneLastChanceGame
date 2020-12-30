@@ -3,6 +3,7 @@ class Play extends Phaser.Scene {
         super("playScene");
         this.startX = config.width / 2;
         this.startY = config.height - 25;
+        this.currentLevel = 1;
         this.currentDialogueSection = -1;
         this.nextDialogueSection = 0;
         this.goalNum = 0;
@@ -66,14 +67,14 @@ class Play extends Phaser.Scene {
             runChildUpdate: true
         });
 
+        //Create clouds when needed
+        this.clouds = this.add.group({
+            runChildUpdate: true
+        });
 
         //Create an array of each stage of obstacles and goals
-        this.currentLevel = 1;
-        // this.levelSetups = [
-        //     this.initialObstaclesandGoals(),
-        //     this.secondObstaclesandGoals.bind(this)
-        // ]
         this.createLevel(this.currentLevel);
+
         //Create an initial batch of obstacles and goals
         console.log("The current level is " + this.currentLevel);
 
@@ -84,7 +85,7 @@ class Play extends Phaser.Scene {
             "dialogue7", "dialogue8", "dialogue9", "dialogue10", "dialogue11", "dialogue12"
         ]
         this.dialogueSectionTimes = [
-            6000, 17000, 9000, 20000, 21000, 9000, 20000, 26000, 13000, 32000, 29000, 25000
+            6000, 17100, 9750, 20985, 21070, 9970, 20650, 26460, 13375, 32550, 29190, 25175
         ]
 
 
@@ -116,16 +117,19 @@ class Play extends Phaser.Scene {
         this.player.update();
         this.physics.world.collide(this.player, this.obstacles, this.collideWithObstacle, null, this);
         this.physics.world.collide(this.player, this.goals, this.reachGoal, null, this);
+        this.physics.world.collide(this.player,this.clouds,this.touchCloud, null, this);
         if (this.goalNum === 0) { //If all goals have been reached, update map
             console.log("There are no remaining goals");
+            if(this.currentLevel < 12){
                 ++this.currentLevel;
                 this.goalNum = 0;
                 console.log("Now the current level is " + this.currentLevel);
                 this.obstacles.clear(true); //Get rid of old obstacles
                 this.goals.clear(true); //Get rid of old goals
+                this.clouds.clear(true); //Get rid of the clouds
                 this.createLevel(this.currentLevel); //Put in new obstacles and goals
                 ++this.nextDialogueSection; //Increase where we are in the dialogue
-
+            }
         }
         this.playNextDialogueSection(); //See if we need to run more dialogue
     }
@@ -156,7 +160,7 @@ class Play extends Phaser.Scene {
 
     playNextDialogueSection() {
         if (this.currentlyPlayingAudio) {
-            console.log("Currently Playing Audio");
+            //console.log("Currently Playing Audio");
         } else if (this.playerDead) {
             console.log("Player is dead, no need to play audio");
         } else {
@@ -184,6 +188,7 @@ class Play extends Phaser.Scene {
         if (Object.keys(levels).length < levelNumber){
             return;
         }
+        console.log("Attempting to reach " + level);
         for (let row = 0; row < levelArr.length; row++) {
             for (let col = 0; col < levelArr[row].length; col++) {
                 let element = levelArr[row][col];
@@ -204,21 +209,25 @@ class Play extends Phaser.Scene {
                        break;
                    case 3:
                         this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
-                            'neverCall', 0, element[1], "neverCall").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
+                            'neverCall', 0, element[1], "givingUp").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
                         break;
                    case 4:
                         this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
-                            'pointless', 0, element[1], "pointless").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
+                            'pointless', 0, element[1], "givingUp").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
                         break;
                    case 6:
                         this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
-                            'givingUp', 0, element[1], "givingUp").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
+                            'ungrateful', 0, element[1], "givingUp").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 100, -10).setImmovable());
                         break;
                    case 7:
-                       this.obstacles.add(new Cloud(this, col*config.width/11 , (.5+row)*config.height/13,
-                           'cloud',0, element[1]))
+                    this.clouds.add(new Cloud(this, col*config.width/11 , (.5+row)*config.height/13,
+                    'cloud',0, element[1]).setScale(1.5, 1.5).setAngle(Math.random()*360).setDepth(1));
                }
             }
         }
+    }
+
+    touchCloud(player, cloud){
+        cloud.fading = true;
     }
 }

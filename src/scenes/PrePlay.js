@@ -19,6 +19,8 @@ class PrePlay extends Phaser.Scene {
         this.load.image('binary', './assets/olcBinary.png');
         this.load.image('money', './assets/moneyObstacleInitial.png');
         this.load.image('cloud','./assets/olc_Cloud-2.png');
+        this.load.image('phoneNumber', './assets/phoneNumber.png');
+        this.load.image('startCall', './assets/startCall.png');
     }
 
     create(){
@@ -29,9 +31,10 @@ class PrePlay extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
         //Initialize Background
-        this.binaryTop = this.add.sprite(config.width/2, 25, 'binary').setOrigin(0.5);
-        this.binaryMid = this.add.sprite(config.width/2, config.height/2, 'binary').setOrigin(0.5);
-        this.binaryBot = this.add.sprite(config.width/2, config.height-25, 'binary').setOrigin(0.5);
+        this.phoneNumber = this.add.sprite(config.width/2, config.height/2, 'phoneNumber').setOrigin(0.5);
+        //this.binaryTop = this.add.sprite(config.width/2, 25, 'binary').setOrigin(0.5);
+        //this.binaryMid = this.add.sprite(config.width/2, config.height/2, 'binary').setOrigin(0.5);
+        //this.binaryBot = this.add.sprite(config.width/2, config.height-25, 'binary').setOrigin(0.5);
 
         //Create goal group and animations
         this.goals = this.add.group({
@@ -47,7 +50,7 @@ class PrePlay extends Phaser.Scene {
             frameRate: 24
         });
 
-        this.goals.add(new Goal(this, config.width/2, 0,'objective',0).setOrigin(.5,0));
+        this.goals.add(new Goal(this, config.width/2, 75,'startCall',0).setScale(.1).setOrigin(.5,0));
 
         // Create Player Object and animations
         this.player = new Player(this, this.startX, this.startY, 'playerWalk', 0).setOrigin(0.5);
@@ -93,7 +96,7 @@ class PrePlay extends Phaser.Scene {
                 let element = levelArr[row][col];
                 switch (element[0]) {
                     case 0:
-                        break
+                        break;
                     case 7:
                         this.clouds.add(new Cloud(this, col*config.width/11 , (.5+row)*config.height/13,
                             'cloud',0, element[1]).setScale(1.5, 1.5).setAngle(Math.random()*360))
