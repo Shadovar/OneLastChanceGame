@@ -18,7 +18,7 @@ class PrePlay extends Phaser.Scene {
         this.load.image('hangupSymbol','./assets/hangupSymbol.png');
         this.load.image('binary', './assets/olcBinary.png');
         this.load.image('money', './assets/moneyObstacleInitial.png');
-        this.load.image('cloud','./assets/olc_cloud_initial.png');
+        this.load.image('cloud','./assets/olc_Cloud-2.png');
     }
 
     create(){
@@ -66,7 +66,7 @@ class PrePlay extends Phaser.Scene {
         //console.log(this.player)
         //Define various gatekeepers
         this.tutorialShowing = true;
-        this.createClouds();
+        this.createLevel(0)
     }
 
     update(){
@@ -82,10 +82,23 @@ class PrePlay extends Phaser.Scene {
         this.scene.start('playScene');
     }
 
-    createClouds(){
-        this.clouds.add(new Cloud(this,config.width/2, 3*config.height/4,'cloud',0).setScale(2,2));
-
+    createLevel(levelNumber) {
+        let level = "level" + levelNumber;
+        let levelArr = levels[level];
+        if (Object.keys(levels).length < levelNumber){
+            return;
+        }
+        for (let row = 0; row < levelArr.length; row++) {
+            for (let col = 0; col < levelArr[row].length; col++) {
+                let element = levelArr[row][col];
+                switch (element[0]) {
+                    case 0:
+                        break
+                    case 7:
+                        this.clouds.add(new Cloud(this, col*config.width/11 , (.5+row)*config.height/13,
+                            'cloud',0, element[1]).setScale(1.5, 1.5).setAngle(Math.random()*360))
+                }
+            }
+        }
     }
-
-
 }
