@@ -34,7 +34,7 @@ class Play extends Phaser.Scene {
         this.load.image('pointless', './assets/pointlessObstacle.png');
         this.load.image('ungrateful', './assets/ungratefulObstacle.png');
         this.load.image('neverCall', './assets/neverCallObstacle.png');
-        this.load.image('cloud','./assets/olc_Cloud-2.png');
+        this.load.image('cloud', './assets/olc_Cloud-2.png');
     }
 
     create() {
@@ -71,6 +71,8 @@ class Play extends Phaser.Scene {
         this.clouds = this.add.group({
             runChildUpdate: true
         });
+
+        //testing level
 
         //Create an array of each stage of obstacles and goals
         this.createLevel(this.currentLevel);
@@ -117,10 +119,10 @@ class Play extends Phaser.Scene {
         this.player.update();
         this.physics.world.collide(this.player, this.obstacles, this.collideWithObstacle, null, this);
         this.physics.world.collide(this.player, this.goals, this.reachGoal, null, this);
-        this.physics.world.collide(this.player,this.clouds,this.touchCloud, null, this);
+        this.physics.world.collide(this.player, this.clouds, this.touchCloud, null, this);
         if (this.goalNum === 0) { //If all goals have been reached, update map
             console.log("There are no remaining goals");
-            if(this.currentLevel < 12){
+            if (this.currentLevel < 12) {
                 ++this.currentLevel;
                 this.goalNum = 0;
                 console.log("Now the current level is " + this.currentLevel);
@@ -185,49 +187,49 @@ class Play extends Phaser.Scene {
     createLevel(levelNumber) {
         let level = "level" + levelNumber;
         let levelArr = levels[level];
-        if (Object.keys(levels).length < levelNumber){
+        if (Object.keys(levels).length < levelNumber) {
             return;
         }
         console.log("Attempting to reach " + level);
         for (let row = 0; row < levelArr.length; row++) {
             for (let col = 0; col < levelArr[row].length; col++) {
                 let element = levelArr[row][col];
-               switch (element[0]) {
-                   case 0:
-                       break
-                   case 1:
-                       this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
-                           'hangupSymbol', 0, element[1], "hangUp").setOrigin(.5, .5).setScale(.08, .08).setCircle(250, 30, -10).setImmovable());
-                       break;
-                   case 5:
-                       this.goals.add(new Goal(this, col*config.width/11 , (.5+row)*config.height/13,'objective',0).setOrigin(.5, .5));
-                       this.goalNum++;
-                       break;
-                   case 2:
-                       this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
-                           'money', 0, element[1], "moneyExcuse").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
-                       break;
-                   case 3:
-                        this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
+                switch (element[0]) {
+                    case 0:
+                        break
+                    case 1:
+                        this.obstacles.add(new Obstacle(this, col * config.width / 11, (.5 + row) * config.height / 13,
+                            'hangupSymbol', 0, element[1], "hangUp").setOrigin(.5, .5).setScale(.08, .08).setCircle(250, 30, -10).setImmovable());
+                        break;
+                    case 5:
+                        this.goals.add(new Goal(this, col * config.width / 11, (.5 + row) * config.height / 13, 'objective', 0).setOrigin(.5, .5));
+                        this.goalNum++;
+                        break;
+                    case 2:
+                        this.obstacles.add(new Obstacle(this, col * config.width / 11, (.5 + row) * config.height / 13,
+                            'money', 0, element[1], "moneyExcuse").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
+                        break;
+                    case 3:
+                        this.obstacles.add(new Obstacle(this, col * config.width / 11, (.5 + row) * config.height / 13,
                             'neverCall', 0, element[1], "neverCallExcuse").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
                         break;
-                   case 4:
-                        this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
+                    case 4:
+                        this.obstacles.add(new Obstacle(this, col * config.width / 11, (.5 + row) * config.height / 13,
                             'pointless', 0, element[1], "pointlessExcuse").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 30, -10).setImmovable());
                         break;
-                   case 6:
-                        this.obstacles.add(new Obstacle(this, col*config.width/11 , (.5+row)*config.height/13,
+                    case 6:
+                        this.obstacles.add(new Obstacle(this, col * config.width / 11, (.5 + row) * config.height / 13,
                             'ungrateful', 0, element[1], "ungratefulExcuse").setOrigin(.5, .5).setScale(.08, .08).setCircle(265, 100, -10).setImmovable());
                         break;
-                   case 7:
-                    this.clouds.add(new Cloud(this, col*config.width/11 , (.5+row)*config.height/13,
-                    'cloud',0, element[1]).setScale(1.5, 1.5).setAngle(Math.random()*360).setDepth(1));
-               }
+                    case 7:
+                        this.clouds.add(new Cloud(this, col * config.width / 11, (.5 + row) * config.height / 13,
+                            'cloud', 0, element[1]).setScale(1.5, 1.5).setAngle(Math.random() * 360).setDepth(1));
+                }
             }
         }
     }
 
-    touchCloud(player, cloud){
+    touchCloud(player, cloud) {
         cloud.fading = true;
     }
 }
