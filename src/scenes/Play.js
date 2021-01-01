@@ -126,6 +126,7 @@ class Play extends Phaser.Scene {
         this.physics.world.collide(this.player, this.obstacles, this.collideWithObstacle, null, this);
         this.physics.world.collide(this.player, this.goals, this.reachGoal, null, this);
         this.physics.world.collide(this.player, this.clouds, this.touchCloud, null, this);
+        this.physics.world.collide(this.son, this.clouds, this.touchCloud, null, this);
         this.physics.world.collide(this.player, this.son, this.collideWithSon, null, this);
         if (this.goalNum === 0) { //If all goals have been reached, update map
             console.log("There are no remaining goals");
@@ -190,6 +191,7 @@ class Play extends Phaser.Scene {
                     console.log("currentDialogue is 11");
                     this.player.respawn(this.startX, this.startY);
                     this.createSon();
+                    ++this.currentDialogueSection;
                 }
             }
         }
@@ -246,7 +248,12 @@ class Play extends Phaser.Scene {
     }
 
     createSon(){
-        this.son.add(new Player(this, config.width/2, config.height/2, 'son', 0).setOrigin(0.5));
+        console.log("giving birth");
+        //this.son.add(new Obstacle(this, config.width/2, config.height/2, 'son', 0, 0, ).setOrigin(0.5));
+        this.tempSon  = this.add.image(config.width/2, config.height/2, 'son');
+        this.add.existing(this.tempSon);
+        this.physics.add.existing(this.tempSon);
+        this.son.add(this.tempSon);
     }
 
     touchCloud(player, cloud) {
