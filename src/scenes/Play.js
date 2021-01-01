@@ -97,7 +97,7 @@ class Play extends Phaser.Scene {
 
 
         // Create Player Object and animations
-        this.player = new Player(this, this.startX, this.startY, 'playerWalk', 0).setOrigin(0.5);
+        this.player = new Player(this, this.startX, this.startY, 'playerWalk', 0).setOrigin(0.5).setDepth(2);
         this.anims.create({                                 //basic movement animation
             key: 'pMove1',
             repeat: 0,

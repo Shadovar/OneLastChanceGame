@@ -21,7 +21,7 @@ class Menu extends Phaser.Scene {
         this.load.audio('ringBack', './assets/sound/RingBack.wav');
         this.load.audio('hangUp', './assets/sound/OLC_Nevermind.wav');
         this.load.audio('moneyExcuse', './assets/sound/OLC_Money.wav');
-        this.load.audio('neverCallExcuse', './assets/sound/OLC_Money.wav');
+        this.load.audio('neverCallExcuse', './assets/sound/OLC_NeverCall.wav');
         this.load.audio('pointlessExcuse', './assets/sound/OLC_Pointless.wav');
         this.load.audio('ungratefulExcuse', './assets/sound/OLC_Ungrateful.wav');
 
