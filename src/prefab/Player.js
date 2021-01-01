@@ -8,9 +8,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setSize(42, 42, true);
         this.setImmovable();
         this.stepLeft = true;
+        this.offScreen = false;
     }
 
     update() {
+        if(this.offScreen){
+            return;
+        }
+
         if (Phaser.Input.Keyboard.JustDown(keyDOWN)) {
             //console.log(" attemping to move player down")
             this.angle = 180;
@@ -21,7 +26,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('pMove2', false);
             }
             this.stepLeft = !this.stepLeft;
-            if(this.y < config.height - 50){
+            if((this.y < config.height - 50)){
                 this.y += 50;
             }
         }
@@ -67,6 +72,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.x -= 50;
             }
         }
+    }
+
+    setOffscreen(){
+        //this.offScreen = true;
+        this.x = -75;
+        this.y = -75;
+    }
+
+    respawn(newX, newY){
+        //this.offScreen = false;
+        this.x = newX;
+        this.y = newY;
+
     }
 
 }

@@ -30,6 +30,7 @@ class Menu extends Phaser.Scene {
         this.load.spritesheet('rightArrowIndicator', './assets/froggerRightArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
         this.load.spritesheet('upArrowIndicator', './assets/froggerUpArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
         this.load.spritesheet('downArrowIndicator', './assets/froggerDownArrow.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 11});
+        this.load.image('titleCard', './assets/openingScreen.png');
 
         //Make the background for the loading bar
         //credit to https://gamedevacademy.org/creating-a-preloading-screen-in-phaser-3/
@@ -60,6 +61,9 @@ class Menu extends Phaser.Scene {
     }
 
     create(){
+      //Create titlecard
+      this.titleCard = this.add.sprite(config.width/2, config.height/2 - 35, 'titleCard');
+
       //Define keyboard inputs
       keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
       keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);

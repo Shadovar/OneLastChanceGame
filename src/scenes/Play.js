@@ -3,9 +3,9 @@ class Play extends Phaser.Scene {
         super("playScene");
         this.startX = config.width / 2;
         this.startY = config.height - 25;
-        this.currentLevel = 1;
-        this.currentDialogueSection = -1;
-        this.nextDialogueSection = 0;
+        this.currentLevel = 11;
+        this.currentDialogueSection = 9;
+        this.nextDialogueSection = 10;
         this.goalNum = 0;
         this.playerDead = false;
         this.currentlyPlayingAudio = false;
@@ -35,6 +35,7 @@ class Play extends Phaser.Scene {
         this.load.image('ungrateful', './assets/ungratefulObstacle.png');
         this.load.image('neverCall', './assets/neverCallObstacle.png');
         this.load.image('cloud', './assets/olc_Cloud-2.png');
+        this.load.image('son', './assets/olcSon.png');
     }
 
     create() {
@@ -70,6 +71,11 @@ class Play extends Phaser.Scene {
         //Create clouds when needed
         this.clouds = this.add.group({
             runChildUpdate: true
+        });
+
+        //Create son when needed
+        this.son = this.add.group({
+            
         });
 
         //testing level
@@ -120,6 +126,7 @@ class Play extends Phaser.Scene {
         this.physics.world.collide(this.player, this.obstacles, this.collideWithObstacle, null, this);
         this.physics.world.collide(this.player, this.goals, this.reachGoal, null, this);
         this.physics.world.collide(this.player, this.clouds, this.touchCloud, null, this);
+        this.physics.world.collide(this.player, this.son, this.collideWithSon, null, this);
         if (this.goalNum === 0) { //If all goals have been reached, update map
             console.log("There are no remaining goals");
             if (this.currentLevel < 12) {
@@ -179,6 +186,11 @@ class Play extends Phaser.Scene {
                 }, null, this);
             } else {
                 console.log("Current dialogue same as next dialogue, no need to load new one");
+                if(this.currentDialogueSection === 11){
+                    console.log("currentDialogue is 11");
+                    this.player.respawn(this.startX, this.startY);
+                    this.createSon();
+                }
             }
         }
 
@@ -227,9 +239,22 @@ class Play extends Phaser.Scene {
                 }
             }
         }
+        //Special for level 12
+        if(levelNumber === 12){
+            this.player.setOffscreen();
+        }
+    }
+
+    createSon(){
+        this.son.add(new Player(this, config.width/2, config.height/2, 'son', 0).setOrigin(0.5));
     }
 
     touchCloud(player, cloud) {
         cloud.fading = true;
+    }
+
+    collideWithSon(player, son){
+        player.destroy();
+        son.destroy();   
     }
 }
