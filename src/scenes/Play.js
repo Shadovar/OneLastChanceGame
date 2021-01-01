@@ -3,12 +3,13 @@ class Play extends Phaser.Scene {
         super("playScene");
         this.startX = config.width / 2;
         this.startY = config.height - 25;
-        this.currentLevel = 11;
-        this.currentDialogueSection = 9;
-        this.nextDialogueSection = 10;
+        this.currentLevel = 1;  //1
+        this.currentDialogueSection = -1; //-1
+        this.nextDialogueSection = 0; //0
         this.goalNum = 0;
         this.playerDead = false;
         this.currentlyPlayingAudio = false;
+        this.done = false;
 
     }
 
@@ -75,10 +76,8 @@ class Play extends Phaser.Scene {
 
         //Create son when needed
         this.son = this.add.group({
-            
         });
 
-        //testing level
 
         //Create an array of each stage of obstacles and goals
         this.createLevel(this.currentLevel);
@@ -119,6 +118,7 @@ class Play extends Phaser.Scene {
 
     update() {
         if (this.playerDead) {
+            console.log("player is dead")
             return;
         }
 
@@ -149,10 +149,23 @@ class Play extends Phaser.Scene {
         console.log("player collides with obstacle " + obstacle.texture.key);
         this.currPlayingDialogue.stop();
         this.cache.audio.remove(this.dialogueSectionNames[this.currentDialogueSection]);
-        player.destroy();
+        player.setOffscreen();
         this.playerDead = true;
         this.currPlayingDialogue = this.sound.add(obstacle.audio);
         this.currPlayingDialogue.play();
+        this.cameras.main.fadeOut(2000, 0, 0, 0)
+        this.currPlayingDialogue.on('complete', () => {
+            this.registry.destroy(); // destroy registry
+            this.events.off();  // disable all active events
+            this.currentLevel = 1;
+            this.currentDialogueSection = -1;
+            this.nextDialogueSection = 0;
+            this.goalNum = 0;
+            this.playerDead = false;
+            this.currentlyPlayingAudio = false;
+            this.scene.start("menuScene")
+        });
+
     }
 
     reachGoal(player, goal) {
@@ -198,6 +211,7 @@ class Play extends Phaser.Scene {
 
     }
 
+    //Create a level from predefined arrays defined in Levels.js
     createLevel(levelNumber) {
         let level = "level" + levelNumber;
         let levelArr = levels[level];
@@ -260,8 +274,13 @@ class Play extends Phaser.Scene {
         cloud.fading = true;
     }
 
-    collideWithSon(player, son){
-        player.destroy();
-        son.destroy();   
+    collideWithSon(player, son) {
+        if (!this.done) {
+            this.done = true;
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.time.delayedCall(1000, () => {
+                this.scene.start('creditScene');
+            })
+        }
     }
 }
